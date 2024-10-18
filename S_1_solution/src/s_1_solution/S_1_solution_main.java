@@ -1,8 +1,13 @@
 package s_1_solution;
+ 
+import java.util.ArrayList;
+
 
 public class S_1_solution_main {
 
-   
+   // if you intend to run any specific function , please just bring the dedicated part out of comment state!
+    
+    
     public static void main(String[] args) {
        int array [] = {1 , 2 , 3 , 4 , 5, 15};
         
@@ -66,16 +71,49 @@ public class S_1_solution_main {
 
 // --------- Q11_1 ---------------------------------------
 
-        S_1_Solution.distribute(20 , "");
+//        S_1_Solution.distribute(20 , "");
         
 // --------- Q12_1 ---------------------------------------
 
-// --------- Q20_1 ---------------------------------------
+//         S_1_Solution.distribute2(20 , "",0);
 
-//    System.out.println("Ack( 3 , 2 ) = "+S_1_Solution.Ack(3,2));
+// --------- Q13_1 ---------------------------------------
 
+//         S_1_Solution.hanoi1(2, 's', 'd', 'a');
+//         System.out.println();
          
+// --------- Q14_1 ---------------------------------------
+
+//        S_1_Solution.hanoi2(2, 's', 'a', 'd');
+
+// --------- Q15_1 ---------------------------------------
+
+//        int M = 8;
+//        int [] board = new int [M];
+//        S_1_Solution.solveNQueens(board, 0);
+                
+// --------- Q16_1 ---------------------------------------  
+
+//    ArrayList<Integer> set = new ArrayList<>();
+//        set.add(1);
+//        set.add(2);
+//        set.add(3);
+//        set.add(4);
+//
+//        ArrayList<Integer> current = new ArrayList<>();
+//        S_1_Solution.printSubsets(set, 0, current);
+
+
+// ------------------ Q17_1 ------------------------------ 
+
+//        System.out.println(S_1_Solution.S17("x*x+x+x-x*x",2));
+
+
+// ------------------ Q18_1 - Q19_1 ------------------------------ 
+         
+//          S_1_Solution.dup("pop");
         
+ 
     }
     }
     

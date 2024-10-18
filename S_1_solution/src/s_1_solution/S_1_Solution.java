@@ -249,32 +249,217 @@ public class S_1_Solution {
 //    ====================== Q12 ================================ 
 //    ======= 2 - 5 - 10 rials but a better version =============
     
-         public static void distribute2(){
-             
-         }
+ public static void distribute2(int n, String res, int index) {
+    if (n == 0) {
+        System.out.println(res);
+        return;
+    }
+    if (n < 0) {
+        return;
+    }
+
+    int[] coins = {2, 5, 10};
+
+    for (int i = index; i < coins.length; i++) {
+        distribute2(n - coins[i], res + coins[i] + " ", i);
+    }
+}
+       
+         
     
 //    =================== Q13 =====================
 //    ================== hanoi ====================
-    public static void hanoi(int n , char s , char d , char a){
- 
+    public static void hanoi1(int n , char s , char d , char a){
+        if(n>0){
+            hanoi1(n-1,s,a,d);
+            System.out.println(s+"->"+d);
+            hanoi1(n-1 , a , d,s);
+        }
     }
     
-//    =================== Q16 =====================
-//    =============== zir majmooee ================
-    public static void SubSet(int [] array , int n){
+    
+//    =================== Q14 =====================
+//    ================== hanoi 2 ====================
+    public static void hanoi2(int n, char s, char a, char d){
+    if (n == 1){
+        System.out.println(s+"->"+a);
+        System.out.println(a+"->"+d);
+        return;
     }
+    hanoi2(n - 1, s, a, d);
+    System.out.println(s+"->"+a);
+    hanoi2(n-1, d, a, s);
+    System.out.println(a+"->"+d);
+    hanoi2(n - 1, s, a, d);
+}
+    
+    
+        
+//    =================== Q15 =====================
+//    ================== queens ====================
+    
+    static void solveNQueens(int[] board, int row) {
+        if (row == board.length) {
+            printQueens(board);
+            return;
+        }
+
+        for (int col = 0; col < board.length; col++) {
+            if (isSafe(board, row, col)) {
+                board[row] = col;
+                // recursive 
+                solveNQueens(board, row + 1);
+                board[row] = -1;  
+            }
+        }
+    }
+
+    static boolean isSafe(int[] board, int row, int col) {
+         
+        for (int i = 0; i < row; i++) {
+            if (board[i] == col) {
+                return false;
+            }
+        }
+ 
+        for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+            if (board[i] == j) {
+                return false;
+            }
+        }
+
+        
+        for (int i = row, j = col; i >= 0 && j < board.length; i--, j++) {
+            if (board[i] == j) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    static void printQueens(int[] board) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                if (board[i] == j) {
+                    System.out.print("Q ");
+                } else {
+                    System.out.print("x ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    
+//    ==================== Q16 ======================
+//    ================= Sub Sets ====================
+    
+     public static void printSubsets(ArrayList<Integer> set, int index, ArrayList<Integer> current) {
+        if (index == set.size()) {
+             
+            System.out.println(current);
+            return;
+        }
+    
+        current.add(set.get(index));
+        printSubsets(set, index + 1, current);
+
+        current.remove(current.size() - 1);
+        printSubsets(set, index + 1, current);
+    }
+     
+//    ==================== Q17 ======================
+//    ================= Soal 17  ====================    
+     
+     public static int S17(String s, int x) {
+        s = s.trim();
+
+        if (s.equals("x")) {
+            return x;
+        }
+
+        int i = s.length() - 1;
+        while (i >= 0) {
+            if (s.charAt(i) == '+' || s.charAt(i) == '-') { 
+                
+                if (s.charAt(i) == '+') {
+                    return S17(s.substring(0, i), x) + S17(s.substring(i + 1), x);
+                } 
+                
+                else {
+                    return S17(s.substring(0, i), x) - S17(s.substring(i + 1), x);
+                }
+            }
+            i--;
+        }
+
+        i = s.length() - 1;
+        while (i >= 0) {
+            
+            
+            if (s.charAt(i) == '*' || s.charAt(i) == '/') {
+                
+                if (s.charAt(i) == '*') {
+                    return S17(s.substring(0, i), x) * S17(s.substring(i + 1), x);
+                } 
+                
+                else {
+                    return S17(s.substring(0, i), x) / S17(s.substring(i + 1), x);
+                }
+            }
+            
+            
+            i--;
+        }
+        return 0;
+    }
+     
+     
+//    =================== Q18 - Q19 ===========================
+//    =================== duplicate ===========================  
+     
+     public static void dup(String s){
+         
+         String temp = "";
+         String rep = "";
+         
+         if (s.length() == 1 || s.isEmpty()){
+             System.out.println(true);
+             return;
+         }
+         for(int i = 1 ; i < s.length() ; i++){
+         if (s.charAt(i) == s.charAt(0)){
+             rep = s.substring(0,i);
+             System.out.println(rep);
+             
+             break;
+         }
+         
+         
+     }
+         for(int i = 0; i < s.length() ; i = i+rep.length()){
+             temp = s.substring(i , i+rep.length());
+             if(!temp.equals(rep)){
+                 System.out.println(false);
+                 return;
+             }
+             else if (temp.length() == 2 && temp.charAt(0) != temp.charAt(1)){
+                 System.out.println(false);
+                 return;
+             }
+             
+             dup(temp.substring(1));
+             
+         
+         }
+     }
       
 //    =================== Q20 =====================
 //    =================== Ack =====================
 
-    public static int Ack(int m , int n){
-        if(n < 0 || m < 0){ 
-            return 0; 
-        }
-        else if( n == 0 ) return n+1;
-        else if( m == 0 ) return Ack(m-1,1);
-        else return Ack(m-1 , Ack(m , n-1));
-    }
+    // the answer of this question has been sent to your pv!
         
     
 
