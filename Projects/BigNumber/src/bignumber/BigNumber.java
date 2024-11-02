@@ -18,6 +18,21 @@ public class BigNumber {
        System.out.println();
    }
    
+   // if (bn > this) ---> the result would be negative ...
+   public int compareTo(BigNumber bn) { 
+       
+       if (this.Digits.size() != bn.Digits.size()) { 
+            return this.Digits.size() - bn.Digits.size(); 
+       } 
+       
+       for (int i = 0; i < this.Digits.size(); i++) { 
+       if (this.Digits.get(i) != bn.Digits.get(i)) { 
+           return this.Digits.get(i) - bn.Digits.get(i); 
+       } 
+   } 
+   return 0; 
+   }
+   
    public BigNumber(){
        Digits = new ArrayList<Byte>();
    }
@@ -40,6 +55,12 @@ public class BigNumber {
        }
        this.numberOfDigits = this.Digits.size();
        
+   }
+   
+   public BigNumber(BigNumber b){
+       this.Digits = b.Digits;
+       this.ispositive = b.ispositive;
+       this.numberOfDigits = b.numberOfDigits;
    }
    
    // converting string to BigNumber
@@ -73,6 +94,26 @@ public class BigNumber {
        int max = Math.max(this.Digits.size(), bn.Digits.size()); 
        BigNumber bnew = new BigNumber();
        
+       // (-) + (-)  
+       if(!this.ispositive && !bn.ispositive){
+           bnew.ispositive = false;
+       }
+       
+       // (-) + (+)
+       if(!this.ispositive && bn.ispositive){
+           this.ispositive = true;
+           return bn.Minus(this);  // (+) - (+)
+       }
+       
+       // (+) + (-)
+       if(this.ispositive && !bn.ispositive){
+           bn.ispositive = true;
+           return this.Minus(bn);  // (+) - (+)
+       }
+       
+       
+       // normal case ...
+       
        // filling the new array with 0!
        for (int i = 0; i < max + 1; i++){ 
            bnew.Digits.add((byte) 0);
@@ -100,12 +141,105 @@ public class BigNumber {
        if(bnew.Digits.get(0) == 0){ 
            bnew.Digits.remove(0); 
        } 
-       
+       bnew.numberOfDigits = bnew.Digits.size();
        return bnew;
  
    }
    
-   public BigNumber fact(int n){
-       ArrayList<
+   
+   public BigNumber Minus(BigNumber bn){
+       BigNumber bnew = new BigNumber();
+       
+       // -1 - (+1) --> -2 
+       if(!this.ispositive && bn.ispositive){
+           bnew = this.Plus(bn);
+           bnew.ispositive = false;
+           
+           return bnew;
+       }
+       
+       // +1 - (-1) --> +2
+       if(this.ispositive && !bn.ispositive){
+           bn.ispositive = true;
+           bnew = this.Plus(bn);
+           bn.ispositive = false;
+           return bnew;
+       }
+       
+       // -1 - (-2) --> (+2) - (+1)
+       if(!this.ispositive && !bn.ispositive){
+           this.ispositive = true;
+           bn.ispositive = true;
+           return bn.Minus(this);
+       }
+       
+       // remaining cases ---> 1) (2 - 1) & (1 - 2)
+       // one's result is positive and the other's is negative.
+       
+       // 1 - 2
+       boolean resultIsPositive = true;
+       if(this.compareTo(bn) < 0){
+           resultIsPositive = false; 
+           BigNumber temp = new BigNumber(this); 
+           this.Digits = bn.Digits;
+           this.ispositive = bn.ispositive;
+           this.numberOfDigits = bn.numberOfDigits;
+           bn = temp;
+       }
+       
+       int max = this.Digits.size(); 
+       for (int i = 0; i < max; i++){ 
+           bnew.Digits.add((byte) 0);
+       }
+       
+       byte borrow = 0; 
+       int thisCount = this.Digits.size() - 1; 
+       int bnCount = bn.Digits.size() - 1 ;
+       
+       
+       for (int i = max - 1; i >= 0; i--) { 
+           
+           byte digit1 = (thisCount >= 0) ? this.Digits.get(thisCount) : 0;        
+           byte digit2 = (bnCount >= 0) ? bn.Digits.get(bnCount) : 0; 
+           
+           digit1 -= borrow; 
+           
+           if (digit1 < digit2) { 
+               digit1 += 10; borrow = 1; 
+           } 
+           
+           else { 
+               borrow = 0; 
+           } 
+           
+           bnew.Digits.set(i, (byte) (digit1 - digit2)); 
+           thisCount--; 
+           bnCount--; 
+       }
+        while (bnew.Digits.size() > 1 && bnew.Digits.get(0) == 0) { 
+            bnew.Digits.remove(0); 
+        } 
+        bnew.ispositive = resultIsPositive;
+        
+        return bnew;
    }
+   
+   
+   public void shiftLeft(int positions) {  
+       while(positions != 0){
+           Digits.add((byte) 0); 
+           positions--;
+       }
+   }
+   
+   
+   public void shiftRight(int positions) { 
+       int i = this.numberOfDigits-1;
+       while(positions != 0){
+           Digits.remove(i);
+           i--;
+           positions--;
+       }
+   }
+   
 }
