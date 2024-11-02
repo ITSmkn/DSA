@@ -102,13 +102,19 @@ public class BigNumber {
        // (-) + (+)
        if(!this.ispositive && bn.ispositive){
            this.ispositive = true;
-           return bn.Minus(this);  // (+) - (+)
+           bnew = bn.Minus(this);  // (+) - (+)
+           this.ispositive = false;
+           
+           return bnew;
        }
        
        // (+) + (-)
        if(this.ispositive && !bn.ispositive){
            bn.ispositive = true;
-           return this.Minus(bn);  // (+) - (+)
+           bnew = this.Minus(bn);  // (+) - (+)
+           bn.ispositive = false;
+           
+           return bnew;
        }
        
        
@@ -152,7 +158,9 @@ public class BigNumber {
        
        // -1 - (+1) --> -2 
        if(!this.ispositive && bn.ispositive){
+           this.ispositive = true;
            bnew = this.Plus(bn);
+           this.ispositive = false;
            bnew.ispositive = false;
            
            return bnew;
@@ -170,7 +178,11 @@ public class BigNumber {
        if(!this.ispositive && !bn.ispositive){
            this.ispositive = true;
            bn.ispositive = true;
-           return bn.Minus(this);
+           bnew = bn.Minus(this);
+           this.ispositive = false;
+           bn.ispositive = false;
+           
+           return bnew;
        }
        
        // remaining cases ---> 1) (2 - 1) & (1 - 2)
