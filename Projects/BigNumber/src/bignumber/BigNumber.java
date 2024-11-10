@@ -320,10 +320,10 @@ public class BigNumber implements Comparable<BigNumber>{
         int m = Math.max(this.Digits.size(), bn.Digits.size()); 
         int m2 = m / 2; 
 
-        BigNumber high1 = new BigNumber(); 
-        BigNumber low1 = new BigNumber(); 
-        BigNumber high2 = new BigNumber(); 
-        BigNumber low2 = new BigNumber(); 
+        BigNumber high1  =  new BigNumber(); 
+        BigNumber low1   =  new BigNumber(); 
+        BigNumber high2  =  new BigNumber(); 
+        BigNumber low2   =  new BigNumber(); 
 
         for (int i = 0; i < this.Digits.size(); i++) { 
             if (i < this.Digits.size() - m2) { 
@@ -408,7 +408,8 @@ public class BigNumber implements Comparable<BigNumber>{
             while (remainder.compareTo(divisor) >= 0) { 
                 remainder = remainder.Minus(divisor); 
                 quotient.Digits.set(i, (byte) (quotient.Digits.get(i) + 1)); 
-            } } 
+            } 
+        } 
         quotient.removeLeadingZeros(); return quotient; 
     } 
     
